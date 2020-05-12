@@ -8,10 +8,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import br.com.main.ConnectionDB;
+import br.com.database.ConnectionDB;
 
 public class SimpleSelection {
-	private ConnectionDB conn = new ConnectionDB();
 	private PreparedStatement ps;
 	private Connection con;
 	private String sql;
@@ -22,25 +21,24 @@ public class SimpleSelection {
 //	private Iterator iter;
 	private ResultSetMetaData rsmd;
 
-	public ArrayList<HashMap<String, Object>> selection(String DB_NAME, String DB_USER, String DB_PASSWORD, String TABLE,
-			String[] fields) {
+	public ArrayList<HashMap<String, Object>> selection(ConnectionDB condb, String TABLE, String[] fields) {
 		try {
-			con = conn.openConnectionDatabase(DB_NAME, DB_USER, DB_PASSWORD);
-		if (fields == null) {
-			sql = "SELECT * FROM " + TABLE;
-		} else if (fields.length != 0) {
-			String select = "";
-			for (int i = 0; i < fields.length; i++) {
-				if (i == (fields.length - 1)) {
-					select += fields[i];
-				} else {
+			con = condb.openConnectionDatabase();
+			if (fields == null) {
+				sql = "SELECT * FROM " + TABLE;
+			} else if (fields.length != 0) {
+				String select = "";
+				for (int i = 0; i < fields.length; i++) {
+					if (i == (fields.length - 1)) {
+						select += fields[i];
+					} else {
 
-					select += fields[i] + ", ";
+						select += fields[i] + ", ";
+					}
 				}
-			}
-			sql = "SELECT (" + select + ") FROM " + TABLE;
+				sql = "SELECT (" + select + ") FROM " + TABLE;
 
-		}
+			}
 			ps = con.prepareStatement(sql);
 			rs = ps.executeQuery();
 			rsmd = rs.getMetaData();

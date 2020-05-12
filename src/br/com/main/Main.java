@@ -4,8 +4,10 @@ import java.util.Scanner;
 
 import javax.swing.JFrame;
 
+import br.com.database.ConnectionDB;
+
 public class Main extends JFrame {
-	public static ConnectionDB con = new ConnectionDB();
+	public static ConnectionDB con;
 
 	public static void main(String[] args) {
 
@@ -53,7 +55,8 @@ public class Main extends JFrame {
 				Scanner database = new Scanner(System.in);
 				String databaseString = database.nextLine();
 
-				String result = con.createDatabase(databaseString, userString, passwordString);
+				con = new ConnectionDB(databaseString, userString, passwordString);
+				boolean result = con.createDatabase(databaseString);
 				System.out.println(result);
 			}
 

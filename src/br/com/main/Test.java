@@ -14,7 +14,7 @@ public class Test {
 		String table = "";
 		SimpleSelection ss = new SimpleSelection();
 		ArrayList<HashMap<String, Object>> al = new ArrayList<HashMap<String, Object>>();
-		al = ss.selection(database, user, password, table, null);
+//		al = ss.selection(database, user, password, table, null);
 
 		for (int i = 0; i < al.size(); i++) {
 			
