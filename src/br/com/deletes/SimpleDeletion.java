@@ -21,6 +21,7 @@ public class SimpleDeletion {
 			ps = conn.prepareStatement(sql);
 			
 			result = ps.execute();
+			result = true;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return result;

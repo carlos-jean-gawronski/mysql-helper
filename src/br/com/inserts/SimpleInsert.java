@@ -2,6 +2,8 @@ package br.com.inserts;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
 import br.com.database.ConnectionDB;
@@ -10,11 +12,12 @@ public class SimpleInsert {
 	
 	private Connection con;
 	private PreparedStatement ps;
-//	private ResultSet rs;
+	private ResultSet rs;
+	private ResultSetMetaData rsmd;
 	private String sql;
 
-	public boolean insert(ConnectionDB condb, String TABLE, String[] fields, String[] values){
-		boolean conditional = false;
+	public boolean insert(ConnectionDB condb, String TABLE, String[] fields, Object[] values){
+		boolean conditional = false;		
 		con = condb.openConnectionDatabase();
 		if(values == null) {
 			return false;

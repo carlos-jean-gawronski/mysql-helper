@@ -33,6 +33,14 @@ public class ConnectionDB {
 		DB_PASSWORD = dB_PASSWORD;
 	}
 
+	public String getDB_USER() {
+		return DB_USER;
+	}
+
+	public String getDB_PASSWORD() {
+		return DB_PASSWORD;
+	}
+
 	public Connection openConnectionDatabase() {
 		String url = "jdbc:mysql://127.0.0.1:3306/" + DB_NAME;
 		try {
