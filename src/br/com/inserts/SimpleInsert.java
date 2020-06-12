@@ -2,57 +2,56 @@ package br.com.inserts;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
 
 import br.com.database.ConnectionDB;
 
 public class SimpleInsert {
-	
+
 	private Connection con;
 	private PreparedStatement ps;
-	private ResultSet rs;
-	private ResultSetMetaData rsmd;
 	private String sql;
 
-	public boolean insert(ConnectionDB condb, String TABLE, String[] fields, Object[] values){
-		boolean conditional = false;		
+	public boolean insert(ConnectionDB condb, String TABLE, String[] fields, Object[] values) {
+		boolean conditional = false;
 		con = condb.openConnectionDatabase();
-		if(values == null) {
+		if (values == null) {
 			return false;
 		}
-		
-		String val = "";
-		for(int i = 0; i < values.length; i++) {
-			if (i == (values.length - 1)) {
-				val += "'" + values[i] + "'";
+
+		String valuesSanitized = new String("");
+
+		for (int i = 0; i < values.length; i++) {
+			if (i == values.length - 1) {
+				valuesSanitized += "\"" + values[i] + "\"";
 			} else {
-				
-				val += "'" + values[i] + "'" + ", ";
+				valuesSanitized += "\"" + values[i] + "\", ";
 			}
 		}
-		if(fields == null) {
-			sql = "insert into " + TABLE + " values (" + val + ")";
-		} else {
-			String flds = "";
-			for(int i = 0; i < fields.length; i++) {
+
+		String select = "";
+		if (fields != null) {
+			for (int i = 0; i < fields.length; i++) {
 				if (i == (fields.length - 1)) {
-					flds += fields[i];
+					select += fields[i];
 				} else {
-					
-					flds += fields[i] + ", ";
+
+					select += fields[i] + ", ";
 				}
 			}
-			sql = "insert into " + TABLE + " (" + flds + ") values (" + val + ")";
 		}
+
+		if (select.length() != 0) {
+			sql = "INSERT INTO " + TABLE + "(" + select + ") VALUES (" + valuesSanitized + ")";
+		} else {
+			sql = "INSERT INTO " + TABLE + " VALUES (" + valuesSanitized + ")";
+		}
+
 		try {
 			ps = con.prepareStatement(sql);
 			ps.execute();
 			conditional = true;
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-			conditional = false;
 		}
 		return conditional;
 	}

@@ -9,6 +9,7 @@ import br.com.deletes.SimpleDeletion;
 import br.com.inserts.SimpleInsert;
 import br.com.main.CredentialReader;
 import br.com.selects.SimpleSelection;
+import br.com.updates.SimpleUpdate;
 
 public class Tests {
 	private static int success = 0;
@@ -36,6 +37,7 @@ public class Tests {
 		createTable("users");
 		insert("users");
 		simpleSelection("users");
+		simpleUpdate("users");
 		simpleDeletion("users");
 		deleteTable("users");
 		deleteDatabase();
@@ -93,8 +95,8 @@ public class Tests {
 
 	public static void insert(String TABLE) {
 		SimpleInsert si = new SimpleInsert();
-		String[] fields = { "email", "password" };
-		Object[] values = { "mark@tes.com", "123" };
+		String[] fields = {"email", "password"};
+		Object[] values = {"mark@tes.com", "123" };
 
 		if (si.insert(condb, TABLE, fields, values)) {
 			success++;
@@ -127,6 +129,18 @@ public class Tests {
 		} else {
 			failed++;
 			System.out.println("Delete on table " + TABLE + ": ERROR");
+		}
+	}
+	public static void simpleUpdate(String TABLE) {
+		SimpleUpdate su = new SimpleUpdate();
+		String[] fields = {"password"};
+		String[] values = {"321"};
+		if (su.update(condb, TABLE, fields, values, "id", "1")) {
+			success++;
+			System.out.println("Update on table " + TABLE + ": OK");
+		} else {
+			failed++;
+			System.out.println("Update on table " + TABLE + ": ERROR");
 		}
 	}
 }
